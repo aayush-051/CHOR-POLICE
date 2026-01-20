@@ -1,0 +1,8 @@
+<h2>Room Code: {{ room.code }}</h2>
+
+<h3>Players:</h3>
+<ul>
+  {% for player in players %}
+    <li>{{ player.name }}</li>
+  {% endfor %}
+</ul>
