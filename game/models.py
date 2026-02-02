@@ -22,7 +22,11 @@ class Player(models.Model):
 
     room = models.ForeignKey(Room , on_delete=models.CASCADE ,related_name="players")
     name = models.CharField(max_length=50)
-    role = models.CharField(max_length=10, choices=ROLES_CHOICES , blank=True)
+    role = models.CharField(
+        max_length=10, 
+        choices=ROLES_CHOICES , 
+        null = True ,
+        blank=True, )
     is_alive = models.BooleanField(default=True)
 
     def __str__(self):

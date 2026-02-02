@@ -1,7 +1,7 @@
 import uuid
 from .models import Player,Room,GameState
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse   #this line is safe to remove since HttpResponse is not used
 
 # Create your views here.
 
