@@ -18,7 +18,8 @@ def home(request):
         if "create" in request.POST:
              room = Room.objects.create(code=generate_room_code())
              GameState.objects.create(room=room)
-             Player.objects.create(name=name, room=room)
+             player = Player.objects.create(name=name, room=room)
+             request.session["player_id"] = player.id
              return redirect("room", code=room.code)
 
 
@@ -31,7 +32,8 @@ def home(request):
             except Room.DoesNotExist:
                 return render(request, "game/home.html", {"error": "Room not found"})
 
-            Player.objects.create(name=name, room=room)
+            player = Player.objects.create(name=name, room=room)
+            request.session["player_id"] = player.id
             return redirect("room", code=room.code)
 
     return render(request, "game/home.html")
@@ -40,9 +42,16 @@ def room(request, code):
     room = Room.objects.get(code=code)
     players = room.players.all()
 
+    player_id = request.session.get("player_id")
+    current_player = None
+
+    if player_id:
+        current_player = Player.objects.filter(id=player_id).first()
+
     return render(request, "game/room.html", {
         "room": room,
-        "players": players
+        "players": players,
+        "current_player": current_player,
     })
 
 

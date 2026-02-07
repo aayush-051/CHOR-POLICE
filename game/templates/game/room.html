@@ -5,7 +5,15 @@
 <h3>Players:</h3>
 <ul>
   {% for player in players %}
-    <li>{{ player.name }}</li>
+    <li>
+      {{ player.name }}
+      {% if player == current_player %}
+      - {{player.role}}
+      {% else %}
+      - Role hidden🔒
+      {% endif %}
+
+    </li>
   {% endfor %}
 </ul>
 
