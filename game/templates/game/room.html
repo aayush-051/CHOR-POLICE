@@ -1,3 +1,5 @@
+
+
 <h2>Room Code: {{ room.code }}</h2>
 
 <h3>Players:</h3>
@@ -6,3 +8,11 @@
     <li>{{ player.name }}</li>
   {% endfor %}
 </ul>
+
+{% if players|length >= 3 %}
+    <a href="{% url 'start_game' room.code %}">
+        <button>Start Game</button>
+    </a>
+{% else %}
+    <p>Waiting for more players...</p>
+{% endif %}

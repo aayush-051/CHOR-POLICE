@@ -1,4 +1,4 @@
-import uuid
+import uuid , random
 from .models import Player,Room,GameState
 from django.shortcuts import render, redirect
 from django.http import HttpResponse   #this line is safe to remove since HttpResponse is not used
@@ -48,6 +48,36 @@ def room(request, code):
 
 def generate_room_code():
     return str(uuid.uuid4())[:6].upper()
+
+def start_game(request, code):
+    room = Room.objects.get(code = code)
+    players = list(room.players.all())
+
+    if len(players) < 3:
+        return redirect("room", code = room.code)
+    
+    random.shuffle(players)
+
+    players[0].role = "chor"
+    players[0].save()
+
+    players[1].role ="police"
+    players[1].save()
+
+
+    for player in players[2:]:
+        player.role = 'citizen'
+        player.save()
+
+
+    gamestate= GameState.objects.get(room=room)   
+    gamestate.phase = "reveal" 
+    gamestate.save()
+
+    return redirect("room", code=room.code)
+
+
+
 
 
 
